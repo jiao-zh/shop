@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop.dao.AdminMapper">
+  <resultMap id="BaseResultMap" type="com.shop.pojo.Admin">
+    <constructor>
+      <idArg column="admin_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="admin_account" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="admin_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="admin_salary" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="admin_password" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="phone" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="address" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="remarks" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    admin_id, admin_account, admin_name, admin_salary, admin_password, phone, address , remarks
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from admin
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from admin
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.shop.pojo.Admin">
+    insert into admin (admin_id, admin_account, admin_name, 
+      admin_salary, admin_password, phone, 
+      address)
+    values (#{adminId,jdbcType=INTEGER}, #{adminAccount,jdbcType=INTEGER}, #{adminName,jdbcType=VARCHAR}, 
+      #{adminSalary,jdbcType=DECIMAL}, #{adminPassword,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+      #{address,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.shop.pojo.Admin">
+    insert into admin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="adminId != null">
+        admin_id,
+      </if>
+      <if test="adminAccount != null">
+        admin_account,
+      </if>
+      <if test="adminName != null">
+        admin_name,
+      </if>
+      <if test="adminSalary != null">
+        admin_salary,
+      </if>
+      <if test="adminPassword != null">
+        admin_password,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="adminId != null">
+        #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="adminAccount != null">
+        #{adminAccount,jdbcType=INTEGER},
+      </if>
+      <if test="adminName != null">
+        #{adminName,jdbcType=VARCHAR},
+      </if>
+      <if test="adminSalary != null">
+        #{adminSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="adminPassword != null">
+        #{adminPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.shop.pojo.Admin">
+    update admin
+    <set>
+      <if test="adminAccount != null">
+        admin_account = #{adminAccount,jdbcType=INTEGER},
+      </if>
+      <if test="adminName != null">
+        admin_name = #{adminName,jdbcType=VARCHAR},
+      </if>
+      <if test="adminSalary != null">
+        admin_salary = #{adminSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="adminPassword != null">
+        admin_password = #{adminPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.shop.pojo.Admin">
+    update admin
+    set admin_account = #{adminAccount,jdbcType=INTEGER},
+      admin_name = #{adminName,jdbcType=VARCHAR},
+      admin_salary = #{adminSalary,jdbcType=DECIMAL},
+      admin_password = #{adminPassword,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR}
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </update>
+
+  <select id="checkAdminAccount" resultType="int" parameterType="String">
+    select count(1) from admin
+    where admin_account = #{adminAccount}
+  </select>
+
+  <select id="selectLogin" resultMap="BaseResultMap" parameterType="map">
+    SELECT
+    <include refid="Base_Column_List" />
+    from admin
+    where admin_account = #{adminAccount}
+    and password = #{adminPassword}
+  </select>
+</mapper>
